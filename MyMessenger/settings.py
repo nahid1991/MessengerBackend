@@ -26,7 +26,7 @@ SECRET_KEY = '7r5$ezsaenw361cw&i8pa+j+$pc2ep#lsio1#v(adh**^&zn-9'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['common-messenger.herokuapp.com', 'localhost']
 
 
 # Application definition
