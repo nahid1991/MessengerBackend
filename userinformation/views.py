@@ -13,7 +13,10 @@ import datetime
 # Create your views here.
 @api_view(['POST'])
 def login(request):
-    result = json.loads(str(request.body, 'utf-8'))
+    try:
+        result = json.loads(str(request.body, 'utf-8'))
+    except Exception as e:
+        return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
     # print(str(result))
     try:
         user = User.objects.get(username=result['user_id'])
