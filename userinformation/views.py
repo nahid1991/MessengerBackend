@@ -13,6 +13,7 @@ import datetime
 # Create your views here.
 @api_view(['POST'])
 def login(request):
+    print(request.body)
     try:
         result = json.loads(str(request.body, 'utf-8'))
     except Exception as e:
