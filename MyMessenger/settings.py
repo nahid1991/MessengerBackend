@@ -26,7 +26,7 @@ SECRET_KEY = '7r5$ezsaenw361cw&i8pa+j+$pc2ep#lsio1#v(adh**^&zn-9'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['common-messenger.herokuapp.com', 'localhost']
+ALLOWED_HOSTS = ['common-messenger.herokuapp.com', 'localhost', '192.168.0.108']
 
 
 # Application definition
@@ -42,10 +42,13 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'rest_framework_docs',
     'messaging',
-    'userinformation'
+    'userinformation',
+    'corsheaders'
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
+    'corsheaders.middleware.CorsPostCsrfMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -128,6 +131,7 @@ TIME_ZONE = 'UTC'
 USE_I18N = True
 
 USE_L10N = True
+CORS_ORIGIN_ALLOW_ALL = True
 
 USE_TZ = True
 
