@@ -14,7 +14,7 @@ import datetime
 @api_view(['POST'])
 def login(request):
     try:
-        print(json.loads(str(request.body, 'utf-8')))
+        result = json.loads(str(request.body, 'utf-8'))
     except Exception as e:
         return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
     try:
