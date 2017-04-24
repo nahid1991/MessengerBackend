@@ -43,7 +43,8 @@ def login(request):
             user = User.objects.create_user(username, email, password)
             name = result['name'].split(" ")
             user.first_name = name[0]
-            user.last_name = name[1]
+            if(name[1]):
+                user.last_name = name[1]
             user.is_active = True
             user.save()
             user_info = UserInformations.objects.create(name=result['name'],
