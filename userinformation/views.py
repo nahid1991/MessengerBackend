@@ -31,8 +31,7 @@ def login(request):
 
         user_info_serializer = UserInfoSerializer(user_info)
         user_serializer = UserSerializer(user)
-        return Response({"token": token.key, "user": user_serializer.data, "user_info": user_info_serializer.data},
-                        status=status.HTTP_200_OK)
+        return Response(token.key, status=status.HTTP_200_OK)
     except Exception as e:
         try:
             print(e)
@@ -58,7 +57,7 @@ def login(request):
                 token = Token.objects.create(user=user)
             except Exception as e:
                 print(e)
-            return Response({"token": token.key, "user": user_serializer.data, "user_info": user_info_serializer.data}, status=status.HTTP_200_OK)
+            return Response(token.key, status=status.HTTP_200_OK)
         except Exception as e:
             print(e)
             return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
