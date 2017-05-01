@@ -12,7 +12,7 @@ import datetime
 
 # Create your views here.
 @api_view(['POST'])
-def login(request):
+def facebook_login(request):
     try:
         result = json.loads(str(request.body, 'utf-8'))
     except Exception as e:
@@ -50,7 +50,9 @@ def login(request):
                                                         user=user,
                                                         created_at=datetime.datetime.now(),
                                                         updated_at=datetime.datetime.now(),
-                                                        access_key=result['access_key'])
+                                                        access_key=result['access_key'],
+                                                        facebook=True,
+                                                        picture='graph.facebook.com/'+result['user_id']+'/picture?type=large')
             user_info_serializer = UserInfoSerializer(user_info)
             user_serializer = UserSerializer(user)
             try:

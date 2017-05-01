@@ -9,3 +9,8 @@ class UserInformations(models.Model):
     created_at = models.DateTimeField(null=True)
     updated_at = models.DateTimeField(null=True)
     user = models.ForeignKey(User)
+    picture = models.CharField(max_length=120, null=True)
+    facebook = models.BooleanField(default=False)
+    google = models.BooleanField(default=False)
+    linkedIn = models.BooleanField(default=False)
+    twitter = models.BooleanField(default=False)
