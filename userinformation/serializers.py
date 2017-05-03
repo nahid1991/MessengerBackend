@@ -8,6 +8,7 @@ class UserSerializer(serializers.ModelSerializer):
         fields = ('id', 'username', 'first_name', 'last_name', 'email')
 
 class UserInfoSerializer(serializers.ModelSerializer):
+    user = UserSerializer(source='get_user_info', read_only=True)
     class Meta:
         model = UserInformations
-        fields = ('id', 'name', 'email', 'access_key')
+        fields = ('id', 'name', 'email', 'access_key', 'picture', 'facebook', 'google', 'linkedIn', 'twitter', 'user')

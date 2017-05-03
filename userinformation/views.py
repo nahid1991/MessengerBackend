@@ -19,7 +19,6 @@ def facebook_login(request):
         return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
     try:
         user = User.objects.get(username=result['user_id'])
-        print("Hello")
         try:
             token = Token.objects.create(user=user)
         except:
@@ -29,8 +28,8 @@ def facebook_login(request):
         user_info.access_key = result['access_key']
         user_info.save()
 
-        user_info_serializer = UserInfoSerializer(user_info)
-        user_serializer = UserSerializer(user)
+        # user_info_serializer = UserInfoSerializer(user_info)
+        # user_serializer = UserSerializer(user)
         return Response(token.key, status=status.HTTP_200_OK)
     except Exception as e:
         try:
@@ -53,8 +52,8 @@ def facebook_login(request):
                                                         access_key=result['access_key'],
                                                         facebook=True,
                                                         picture='graph.facebook.com/'+result['user_id']+'/picture?type=large')
-            user_info_serializer = UserInfoSerializer(user_info)
-            user_serializer = UserSerializer(user)
+            # user_info_serializer = UserInfoSerializer(user_info)
+            # user_serializer = UserSerializer(user)
             try:
                 token = Token.objects.create(user=user)
             except Exception as e:
@@ -71,3 +70,14 @@ def delete_token(user):
     except Exception as e:
         print(str(e))
 
+
+@api_view(['GET'])
+@authentication_classes([TokenAuthentication])
+def get_user_info(request):
+    try:
+        user_info = UserInformations.objects.get(user=request.user)
+        user_info_serializer = UserInfoSerializer(user_info)
+        return Response(user_info_serializer.data, status=status.HTTP_200_OK)
+    except Exception as e:
+        print(e)
+        return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)

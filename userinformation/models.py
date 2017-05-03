@@ -14,3 +14,7 @@ class UserInformations(models.Model):
     google = models.BooleanField(default=False)
     linkedIn = models.BooleanField(default=False)
     twitter = models.BooleanField(default=False)
+
+    def get_user_info(self):
+        user = User.objects.get(id=self.user.id)
+        return user;
