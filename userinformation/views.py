@@ -74,6 +74,7 @@ def delete_token(user):
 @api_view(['GET'])
 @authentication_classes([TokenAuthentication])
 def get_user_info(request):
+    print(request.user)
     try:
         user_info = UserInformations.objects.get(user=request.user)
         user_info_serializer = UserInfoSerializer(user_info)
