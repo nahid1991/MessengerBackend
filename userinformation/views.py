@@ -24,10 +24,16 @@ def facebook_login(request):
         except:
             delete_token(user)
             token = Token.objects.create(user=user)
+        user.last_login = datetime.datetime.now()
+
         user_info = UserInformations.objects.get(user=user)
         user_info.access_key = result['access_key']
         user_info.social_id = result['user_id']
+        user_info.picture = 'https://graph.facebook.com/'+result['user_id']+'/picture?type=large'
+        user_info.facebook = True
         user_info.save()
+
+        user.save()
 
         # user_info_serializer = UserInfoSerializer(user_info)
         # user_serializer = UserSerializer(user)
@@ -47,17 +53,18 @@ def facebook_login(request):
             user.first_name = name[0]
             if(name[1]):
                 user.last_name = name[1]
+            user.last_login = datetime.datetime.now()
             user.is_active = True
             user.save()
-            user_info = UserInformations.objects.create(name=result['name'],
-                                                        email=result['email'],
-                                                        user=user,
-                                                        created_at=datetime.datetime.now(),
-                                                        updated_at=datetime.datetime.now(),
-                                                        access_key=result['access_key'],
-                                                        facebook=True,
-                                                        user_id=result['user_id'],
-                                                        picture='https://graph.facebook.com/'+result['user_id']+'/picture?type=large')
+            UserInformations.objects.create(name=result['name'],
+                email=result['email'],
+                user=user,
+                created_at=datetime.datetime.now(),
+                updated_at=datetime.datetime.now(),
+                access_key=result['access_key'],
+                facebook=True,
+                user_id=result['user_id'],
+                picture='https://graph.facebook.com/'+result['user_id']+'/picture?type=large')
             # user_info_serializer = UserInfoSerializer(user_info)
             # user_serializer = UserSerializer(user)
             try:
