@@ -63,7 +63,7 @@ def facebook_login(request):
                 updated_at=datetime.datetime.now(),
                 access_key=result['access_key'],
                 facebook=True,
-                user_id=result['user_id'],
+                social_id=result['user_id'],
                 picture='https://graph.facebook.com/'+result['user_id']+'/picture?type=large')
             # user_info_serializer = UserInfoSerializer(user_info)
             # user_serializer = UserSerializer(user)
