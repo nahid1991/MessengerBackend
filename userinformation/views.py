@@ -18,7 +18,7 @@ def facebook_login(request):
     except Exception as e:
         return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
     try:
-        user = User.objects.get(username=result['user_id'])
+        user = User.objects.get(username=result['email'])
         try:
             token = Token.objects.create(user=user)
         except:
@@ -34,7 +34,7 @@ def facebook_login(request):
     except Exception as e:
         try:
             print(e)
-            username = result['user_id']
+            username = result['email']
             email = result['email']
             password = '123456'
             user = User.objects.create_user(username, email, password)
@@ -51,6 +51,7 @@ def facebook_login(request):
                                                         updated_at=datetime.datetime.now(),
                                                         access_key=result['access_key'],
                                                         facebook=True,
+                                                        user_id=result['user_id'],
                                                         picture='https://graph.facebook.com/'+result['user_id']+'/picture?type=large')
             # user_info_serializer = UserInfoSerializer(user_info)
             # user_serializer = UserSerializer(user)
