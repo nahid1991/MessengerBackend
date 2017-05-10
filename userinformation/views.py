@@ -26,6 +26,7 @@ def facebook_login(request):
             token = Token.objects.create(user=user)
         user_info = UserInformations.objects.get(user=user)
         user_info.access_key = result['access_key']
+        user_info.social_id = result['user_id']
         user_info.save()
 
         # user_info_serializer = UserInfoSerializer(user_info)
