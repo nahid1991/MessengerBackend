@@ -38,7 +38,11 @@ def facebook_login(request):
             username = result['email']
             email = result['email']
             password = '123456'
-            user = User.objects.create_user(username, email, password)
+            try:
+                user = User.objects.create_user(username, email, password)
+            except Exception as e:
+                print(e)
+                return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
             name = result['name'].split(" ")
             user.first_name = name[0]
             if(name[1]):
@@ -63,7 +67,7 @@ def facebook_login(request):
             return Response(token.key, status=status.HTTP_200_OK)
         except Exception as e:
             print(e)
-            # return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
 def delete_token(user):
     try:
