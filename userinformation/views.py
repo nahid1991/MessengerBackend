@@ -76,6 +76,73 @@ def facebook_login(request):
             print(e)
             return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
+
+@api_view(['POST'])
+def google_login(request):
+    try:
+        result = json.loads(str(request.body, 'utf-8'))
+    except Exception as e:
+        return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+    try:
+        user = User.objects.get(username=result['email'])
+        try:
+            token = Token.objects.create(user=user)
+        except:
+            delete_token(user)
+            token = Token.objects.create(user=user)
+        user.last_login = datetime.datetime.now()
+
+        user_info = UserInformations.objects.get(user=user)
+        user_info.access_key = result['access_key']
+        user_info.social_id = result['user_id']
+        user_info.picture = result['image_url']
+        user_info.google = True
+        user_info.save()
+
+        user.save()
+
+        # user_info_serializer = UserInfoSerializer(user_info)
+        # user_serializer = UserSerializer(user)
+        return Response(token.key, status=status.HTTP_200_OK)
+    except Exception as e:
+        try:
+            print(e)
+            username = result['email']
+            email = result['email']
+            password = '123456'
+            try:
+                user = User.objects.create_user(username, email, password)
+            except Exception as e:
+                print(e)
+                return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+            name = result['name'].split(" ")
+            user.first_name = name[0]
+            if(name[1]):
+                user.last_name = name[1]
+            user.last_login = datetime.datetime.now()
+            user.is_active = True
+            user.save()
+            UserInformations.objects.create(name=result['name'],
+                email=result['email'],
+                user=user,
+                created_at=datetime.datetime.now(),
+                updated_at=datetime.datetime.now(),
+                access_key=result['access_key'],
+                google=True,
+                social_id=result['user_id'],
+                picture=result['image_url'])
+            # user_info_serializer = UserInfoSerializer(user_info)
+            # user_serializer = UserSerializer(user)
+            try:
+                token = Token.objects.create(user=user)
+            except Exception as e:
+                print(e)
+            return Response(token.key, status=status.HTTP_200_OK)
+        except Exception as e:
+            print(e)
+            return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+
 def delete_token(user):
     try:
         token = Token.objects.get(user=user)
