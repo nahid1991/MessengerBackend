@@ -43,7 +43,8 @@ INSTALLED_APPS = [
     'rest_framework_docs',
     'messaging',
     'userinformation',
-    'corsheaders'
+    'corsheaders',
+    'ws4redis'
 ]
 
 MIDDLEWARE = [
@@ -58,6 +59,21 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware'
 ]
+
+WEBSOCKET_URL = '/ws/'
+
+WS4REDIS_CONNECTION = {
+    'host': 'redis.example.com',
+    'port': 16379,
+    'db': 17,
+    'password': 'verysecret',
+}
+
+WS4REDIS_EXPIRE = 7200
+
+WS4REDIS_PREFIX = 'ws'
+
+# WS4REDIS_SUBSCRIBER = 'myapp.redis_store.RedisSubscriber'
 
 ROOT_URLCONF = 'MyMessenger.urls'
 
@@ -77,7 +93,8 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'MyMessenger.wsgi.application'
+# WSGI_APPLICATION = 'MyMessenger.wsgi.application'
+WSGI_APPLICATION = 'ws4redis.django_runserver.application'
 
 
 # Database
@@ -146,3 +163,6 @@ STATICFILES_DIRS = (
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(PROJECT_ROOT, 'media')
+
+SESSION_ENGINE = 'redis_sessions.session'
+SESSION_REDIS_PREFIX = 'session'
